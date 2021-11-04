@@ -1,10 +1,13 @@
 # (c) Copyright 2019-2020 OLX
 FROM rust:1.45-alpine3.12
 
-ENV VIPS_VERSION=8.10.0
+ENV VIPS_VERSION=8.11.4
 
 RUN apk add --update --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community \
             build-base \
+            imagemagick \
+            imagemagick-dev \
+            imagemagick-libs \
             pkgconfig \
             openssl-dev\
             clang \
@@ -19,7 +22,6 @@ RUN apk add --update --no-cache --repository=http://dl-cdn.alpinelinux.org/alpin
             libpng-dev \
             orc-dev \
             libwebp-dev \
-            libheif-dev \
             libimagequant-dev \
             gobject-introspection-dev \
             fftw-dev \
@@ -34,7 +36,7 @@ RUN tar xvzf vips-${VIPS_VERSION}.tar.gz -C vips --strip-components 1
 
 WORKDIR /vips
 
-RUN ./configure --enable-debug=no --without-python
+RUN ./configure --enable-debug=yes --without-python
 
 RUN make
 

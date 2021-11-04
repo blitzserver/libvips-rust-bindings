@@ -89,10 +89,10 @@ pub enum Error {
     Composite2Error,
     BlackError,
     GaussnoiseError,
-    TextError,
     XyzError,
     GaussmatError,
     LogmatError,
+    TextError,
     EyeError,
     GreyError,
     ZoneError,
@@ -121,6 +121,7 @@ pub enum Error {
     MatrixloadSourceError,
     RawloadError,
     VipsloadError,
+    VipsloadSourceError,
     AnalyzeloadError,
     PpmloadError,
     PpmloadSourceError,
@@ -143,9 +144,8 @@ pub enum Error {
     TiffloadError,
     TiffloadBufferError,
     TiffloadSourceError,
-    HeifloadError,
-    HeifloadBufferError,
-    HeifloadSourceError,
+    MagickloadError,
+    MagickloadBufferError,
     CsvsaveError,
     CsvsaveTargetError,
     MatrixsaveError,
@@ -154,6 +154,7 @@ pub enum Error {
     RawsaveError,
     RawsaveFdError,
     VipssaveError,
+    VipssaveTargetError,
     PpmsaveError,
     PpmsaveTargetError,
     RadsaveError,
@@ -172,9 +173,8 @@ pub enum Error {
     WebpsaveTargetError,
     TiffsaveError,
     TiffsaveBufferError,
-    HeifsaveError,
-    HeifsaveBufferError,
-    HeifsaveTargetError,
+    MagicksaveError,
+    MagicksaveBufferError,
     ThumbnailError,
     ThumbnailBufferError,
     ThumbnailImageError,
@@ -622,10 +622,6 @@ impl std::fmt::Display for Error {
                 f,
                 "vips error: GaussnoiseError. Check error buffer for more details"
             ),
-            Error::TextError => write!(
-                f,
-                "vips error: TextError. Check error buffer for more details"
-            ),
             Error::XyzError => write!(
                 f,
                 "vips error: XyzError. Check error buffer for more details"
@@ -637,6 +633,10 @@ impl std::fmt::Display for Error {
             Error::LogmatError => write!(
                 f,
                 "vips error: LogmatError. Check error buffer for more details"
+            ),
+            Error::TextError => write!(
+                f,
+                "vips error: TextError. Check error buffer for more details"
             ),
             Error::EyeError => write!(
                 f,
@@ -750,6 +750,10 @@ impl std::fmt::Display for Error {
                 f,
                 "vips error: VipsloadError. Check error buffer for more details"
             ),
+            Error::VipsloadSourceError => write!(
+                f,
+                "vips error: VipsloadSourceError. Check error buffer for more details"
+            ),
             Error::AnalyzeloadError => write!(
                 f,
                 "vips error: AnalyzeloadError. Check error buffer for more details"
@@ -838,17 +842,13 @@ impl std::fmt::Display for Error {
                 f,
                 "vips error: TiffloadSourceError. Check error buffer for more details"
             ),
-            Error::HeifloadError => write!(
+            Error::MagickloadError => write!(
                 f,
-                "vips error: HeifloadError. Check error buffer for more details"
+                "vips error: MagickloadError. Check error buffer for more details"
             ),
-            Error::HeifloadBufferError => write!(
+            Error::MagickloadBufferError => write!(
                 f,
-                "vips error: HeifloadBufferError. Check error buffer for more details"
-            ),
-            Error::HeifloadSourceError => write!(
-                f,
-                "vips error: HeifloadSourceError. Check error buffer for more details"
+                "vips error: MagickloadBufferError. Check error buffer for more details"
             ),
             Error::CsvsaveError => write!(
                 f,
@@ -881,6 +881,10 @@ impl std::fmt::Display for Error {
             Error::VipssaveError => write!(
                 f,
                 "vips error: VipssaveError. Check error buffer for more details"
+            ),
+            Error::VipssaveTargetError => write!(
+                f,
+                "vips error: VipssaveTargetError. Check error buffer for more details"
             ),
             Error::PpmsaveError => write!(
                 f,
@@ -954,17 +958,13 @@ impl std::fmt::Display for Error {
                 f,
                 "vips error: TiffsaveBufferError. Check error buffer for more details"
             ),
-            Error::HeifsaveError => write!(
+            Error::MagicksaveError => write!(
                 f,
-                "vips error: HeifsaveError. Check error buffer for more details"
+                "vips error: MagicksaveError. Check error buffer for more details"
             ),
-            Error::HeifsaveBufferError => write!(
+            Error::MagicksaveBufferError => write!(
                 f,
-                "vips error: HeifsaveBufferError. Check error buffer for more details"
-            ),
-            Error::HeifsaveTargetError => write!(
-                f,
-                "vips error: HeifsaveTargetError. Check error buffer for more details"
+                "vips error: MagicksaveBufferError. Check error buffer for more details"
             ),
             Error::ThumbnailError => write!(
                 f,
