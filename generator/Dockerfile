@@ -7,7 +7,10 @@ RUN apk add --update --no-cache --repository=http://dl-cdn.alpinelinux.org/alpin
             build-base \
             imagemagick \
             imagemagick-dev \
+            gtk-doc \
             imagemagick-libs \
+            autoconf \
+            automake \
             pkgconfig \
             openssl-dev\
             clang \
@@ -28,13 +31,15 @@ RUN apk add --update --no-cache --repository=http://dl-cdn.alpinelinux.org/alpin
             pango-dev \
             libgsf-dev 
 
-RUN wget https://github.com/libvips/libvips/releases/download/v${VIPS_VERSION}/vips-${VIPS_VERSION}.tar.gz
+RUN wget https://github.com/blitzserver/libvips/archive/refs/heads/master.tar.gz
 
 RUN mkdir vips
 
-RUN tar xvzf vips-${VIPS_VERSION}.tar.gz -C vips --strip-components 1
+RUN tar xvzf master.tar.gz -C vips --strip-components 1
 
 WORKDIR /vips
+
+RUN ./autogen.sh --enable-debug=yes --without-python
 
 RUN ./configure --enable-debug=yes --without-python
 
@@ -48,6 +53,6 @@ WORKDIR /
 
 RUN rm -rf vips
 
-RUN rm -f vips-${VIPS_VERSION}.tar.gz
+RUN rm -f master.tar.gz
 
 RUN rustup component add rustfmt --toolchain 1.45.2-x86_64-unknown-linux-musl
