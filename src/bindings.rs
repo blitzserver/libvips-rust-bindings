@@ -1042,15 +1042,15 @@ pub const VIPS_PATH_MAX: u32 = 4096;
 pub const VIPS_TARGET_BUFFER_SIZE: u32 = 8500;
 pub const VIPS_TARGET_CUSTOM_BUFFER_SIZE: u32 = 4096;
 pub const VIPS_SBUF_BUFFER_SIZE: u32 = 4096;
-pub const VIPS_VERSION: &'static [u8; 7usize] = b"8.11.4\0";
-pub const VIPS_VERSION_STRING: &'static [u8; 36usize] = b"8.11.4-Thu Sep 23 09:40:01 UTC 2021\0";
+pub const VIPS_VERSION: &'static [u8; 7usize] = b"8.12.0\0";
+pub const VIPS_VERSION_STRING: &'static [u8; 36usize] = b"8.12.0-Fri Nov 12 12:07:20 UTC 2021\0";
 pub const VIPS_MAJOR_VERSION: u32 = 8;
-pub const VIPS_MINOR_VERSION: u32 = 11;
-pub const VIPS_MICRO_VERSION: u32 = 4;
-pub const VIPS_LIBRARY_CURRENT: u32 = 55;
-pub const VIPS_LIBRARY_REVISION: u32 = 3;
-pub const VIPS_LIBRARY_AGE: u32 = 13;
-pub const VIPS_CONFIG : & 'static [ u8 ; 1237usize ] = b"enable debug: no, enable deprecated library components: yes, enable modules: no, use fftw3 for FFT: yes, accelerate loops with orc: yes, ICC profile support with lcms: yes (lcms2), zlib: yes, text rendering with pangocairo: yes, font file support with fontconfig: yes, RAD load/save: yes, Analyze7 load/save: yes, PPM load/save: yes, GIF load:  yes, EXIF metadata support with libexif: yes, JPEG load/save with libjpeg: yes (pkg-config), JXL load/save with libjxl: no (dynamic module: no), JPEG2000 load/save with libopenjp2: no, PNG load with libspng: no, PNG load/save with libpng: yes (pkg-config libpng >= 1.2.9), PNG quantisation to 8 bit: yes, TIFF load/save with libtiff: yes (pkg-config libtiff-4), image pyramid save: yes, HEIC/AVIF load/save with libheif: no (dynamic module: no), WebP load/save with libwebp: yes, PDF load with PDFium:  no, PDF load with poppler-glib: no (dynamic module: no), SVG load with librsvg-2.0: yes, EXR load with OpenEXR: no, OpenSlide load: no (dynamic module: no), Matlab load with matio: no, NIfTI load/save with niftiio: no, FITS load/save with cfitsio: no, Magick package: MagickCore (dynamic module: no), Magick API version: magick7, load with libMagickCore: yes, save with libMagickCore: yes\0" ;
+pub const VIPS_MINOR_VERSION: u32 = 12;
+pub const VIPS_MICRO_VERSION: u32 = 0;
+pub const VIPS_LIBRARY_CURRENT: u32 = 56;
+pub const VIPS_LIBRARY_REVISION: u32 = 0;
+pub const VIPS_LIBRARY_AGE: u32 = 14;
+pub const VIPS_CONFIG : & 'static [ u8 ; 1258usize ] = b"enable debug: yes, enable deprecated library components: yes, enable modules: no, use fftw3 for FFT: yes, accelerate loops with orc: yes, ICC profile support with lcms: yes (lcms2), zlib: yes, text rendering with pangocairo: yes, font file support with fontconfig: yes, RAD load/save: yes, Analyze7 load/save: yes, PPM load/save: yes, GIF load:  yes, EXIF metadata support with libexif: yes, JPEG load/save with libjpeg: yes (pkg-config), JXL load/save with libjxl: no (dynamic module: no), JPEG2000 load/save with libopenjp2: no, PNG load with libspng: no, PNG load/save with libpng: yes (pkg-config libpng >= 1.2.9), quantisation to 8 bit: yes, TIFF load/save with libtiff: yes (pkg-config libtiff-4), image pyramid save: yes, HEIC/AVIF load/save with libheif: no (dynamic module: no), WebP load/save with libwebp: yes, PDF load with PDFium:  no, PDF load with poppler-glib: no (dynamic module: no), SVG load with librsvg-2.0: yes, EXR load with OpenEXR: no, OpenSlide load: no (dynamic module: no), Matlab load with matio: no, NIfTI load/save with niftiio: no, FITS load/save with cfitsio: no, GIF save with cgif: no, Magick package: MagickCore (dynamic module: no), Magick API version: magick7, load with libMagickCore: yes, save with libMagickCore: yes\0" ;
 pub const VIPS_SONAME: &'static [u8; 14usize] = b"libvips.so.42\0";
 pub const VIPS_EXEEXT: &'static [u8; 1usize] = b"\0";
 pub const VIPS_ENABLE_DEPRECATED: u32 = 1;
@@ -60242,6 +60242,9 @@ extern "C" {
     pub fn vips_source_is_mappable(source: *mut VipsSource) -> gboolean;
 }
 extern "C" {
+    pub fn vips_source_is_file(source: *mut VipsSource) -> gboolean;
+}
+extern "C" {
     pub fn vips_source_map(
         source: *mut VipsSource,
         length: *mut size_t,
@@ -64694,6 +64697,9 @@ extern "C" {
     pub fn vips_image_get_format(image: *const VipsImage) -> VipsBandFormat;
 }
 extern "C" {
+    pub fn vips_image_get_format_max(format: VipsBandFormat) -> f64;
+}
+extern "C" {
     pub fn vips_image_guess_format(image: *const VipsImage) -> VipsBandFormat;
 }
 extern "C" {
@@ -65314,6 +65320,12 @@ pub const VipsForeignFlags_VIPS_FOREIGN_BIGENDIAN: VipsForeignFlags = 2;
 pub const VipsForeignFlags_VIPS_FOREIGN_SEQUENTIAL: VipsForeignFlags = 4;
 pub const VipsForeignFlags_VIPS_FOREIGN_ALL: VipsForeignFlags = 7;
 pub type VipsForeignFlags = u32;
+pub const VipsFailOn_VIPS_FAIL_ON_NONE: VipsFailOn = 0;
+pub const VipsFailOn_VIPS_FAIL_ON_TRUNCATED: VipsFailOn = 1;
+pub const VipsFailOn_VIPS_FAIL_ON_ERROR: VipsFailOn = 2;
+pub const VipsFailOn_VIPS_FAIL_ON_WARNING: VipsFailOn = 3;
+pub const VipsFailOn_VIPS_FAIL_ON_LAST: VipsFailOn = 4;
+pub type VipsFailOn = u32;
 #[repr(C)]
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct _VipsForeignLoad {
@@ -65321,6 +65333,7 @@ pub struct _VipsForeignLoad {
     pub memory: gboolean,
     pub access: VipsAccess,
     pub flags: VipsForeignFlags,
+    pub fail_on: VipsFailOn,
     pub fail: gboolean,
     pub sequential: gboolean,
     pub out: *mut VipsImage,
@@ -65382,8 +65395,18 @@ fn bindgen_test_layout__VipsForeignLoad() {
         )
     );
     assert_eq!(
-        unsafe { &(*(::std::ptr::null::<_VipsForeignLoad>())).fail as *const _ as usize },
+        unsafe { &(*(::std::ptr::null::<_VipsForeignLoad>())).fail_on as *const _ as usize },
         108usize,
+        concat!(
+            "Offset of field: ",
+            stringify!(_VipsForeignLoad),
+            "::",
+            stringify!(fail_on)
+        )
+    );
+    assert_eq!(
+        unsafe { &(*(::std::ptr::null::<_VipsForeignLoad>())).fail as *const _ as usize },
+        112usize,
         concat!(
             "Offset of field: ",
             stringify!(_VipsForeignLoad),
@@ -65393,7 +65416,7 @@ fn bindgen_test_layout__VipsForeignLoad() {
     );
     assert_eq!(
         unsafe { &(*(::std::ptr::null::<_VipsForeignLoad>())).sequential as *const _ as usize },
-        112usize,
+        116usize,
         concat!(
             "Offset of field: ",
             stringify!(_VipsForeignLoad),
@@ -66218,6 +66241,12 @@ extern "C" {
         ...
     ) -> ::std::os::raw::c_int;
 }
+pub const VipsForeignPpmFormat_VIPS_FOREIGN_PPM_FORMAT_PBM: VipsForeignPpmFormat = 0;
+pub const VipsForeignPpmFormat_VIPS_FOREIGN_PPM_FORMAT_PGM: VipsForeignPpmFormat = 1;
+pub const VipsForeignPpmFormat_VIPS_FOREIGN_PPM_FORMAT_PPM: VipsForeignPpmFormat = 2;
+pub const VipsForeignPpmFormat_VIPS_FOREIGN_PPM_FORMAT_PFM: VipsForeignPpmFormat = 3;
+pub const VipsForeignPpmFormat_VIPS_FOREIGN_PPM_FORMAT_LAST: VipsForeignPpmFormat = 4;
+pub type VipsForeignPpmFormat = u32;
 extern "C" {
     pub fn vips_ppmload(
         filename: *const ::std::os::raw::c_char,
@@ -66335,6 +66364,13 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    pub fn vips_svgload_string(
+        str: *const ::std::os::raw::c_char,
+        out: *mut *mut VipsImage,
+        ...
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
     pub fn vips_svgload_source(
         source: *mut VipsSource,
         out: *mut *mut VipsImage,
@@ -66360,6 +66396,28 @@ extern "C" {
     pub fn vips_gifload_source(
         source: *mut VipsSource,
         out: *mut *mut VipsImage,
+        ...
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn vips_gifsave(
+        in_: *mut VipsImage,
+        filename: *const ::std::os::raw::c_char,
+        ...
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn vips_gifsave_buffer(
+        in_: *mut VipsImage,
+        buf: *mut *mut ::std::os::raw::c_void,
+        len: *mut size_t,
+        ...
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn vips_gifsave_target(
+        in_: *mut VipsImage,
+        target: *mut VipsTarget,
         ...
     ) -> ::std::os::raw::c_int;
 }
@@ -66520,7 +66578,8 @@ pub const VipsForeignDzLayout_VIPS_FOREIGN_DZ_LAYOUT_DZ: VipsForeignDzLayout = 0
 pub const VipsForeignDzLayout_VIPS_FOREIGN_DZ_LAYOUT_ZOOMIFY: VipsForeignDzLayout = 1;
 pub const VipsForeignDzLayout_VIPS_FOREIGN_DZ_LAYOUT_GOOGLE: VipsForeignDzLayout = 2;
 pub const VipsForeignDzLayout_VIPS_FOREIGN_DZ_LAYOUT_IIIF: VipsForeignDzLayout = 3;
-pub const VipsForeignDzLayout_VIPS_FOREIGN_DZ_LAYOUT_LAST: VipsForeignDzLayout = 4;
+pub const VipsForeignDzLayout_VIPS_FOREIGN_DZ_LAYOUT_IIIF3: VipsForeignDzLayout = 4;
+pub const VipsForeignDzLayout_VIPS_FOREIGN_DZ_LAYOUT_LAST: VipsForeignDzLayout = 5;
 pub type VipsForeignDzLayout = u32;
 pub const VipsForeignDzDepth_VIPS_FOREIGN_DZ_DEPTH_ONEPIXEL: VipsForeignDzDepth = 0;
 pub const VipsForeignDzDepth_VIPS_FOREIGN_DZ_DEPTH_ONETILE: VipsForeignDzDepth = 1;
@@ -66617,6 +66676,9 @@ extern "C" {
     pub fn vips_foreign_flags_get_type() -> GType;
 }
 extern "C" {
+    pub fn vips_fail_on_get_type() -> GType;
+}
+extern "C" {
     pub fn vips_saveable_get_type() -> GType;
 }
 extern "C" {
@@ -66639,6 +66701,9 @@ extern "C" {
 }
 extern "C" {
     pub fn vips_foreign_png_filter_get_type() -> GType;
+}
+extern "C" {
+    pub fn vips_foreign_ppm_format_get_type() -> GType;
 }
 extern "C" {
     pub fn vips_foreign_dz_layout_get_type() -> GType;
@@ -66701,11 +66766,18 @@ pub const VipsOperationMath_VIPS_OPERATION_MATH_LOG: VipsOperationMath = 6;
 pub const VipsOperationMath_VIPS_OPERATION_MATH_LOG10: VipsOperationMath = 7;
 pub const VipsOperationMath_VIPS_OPERATION_MATH_EXP: VipsOperationMath = 8;
 pub const VipsOperationMath_VIPS_OPERATION_MATH_EXP10: VipsOperationMath = 9;
-pub const VipsOperationMath_VIPS_OPERATION_MATH_LAST: VipsOperationMath = 10;
+pub const VipsOperationMath_VIPS_OPERATION_MATH_SINH: VipsOperationMath = 10;
+pub const VipsOperationMath_VIPS_OPERATION_MATH_COSH: VipsOperationMath = 11;
+pub const VipsOperationMath_VIPS_OPERATION_MATH_TANH: VipsOperationMath = 12;
+pub const VipsOperationMath_VIPS_OPERATION_MATH_ASINH: VipsOperationMath = 13;
+pub const VipsOperationMath_VIPS_OPERATION_MATH_ACOSH: VipsOperationMath = 14;
+pub const VipsOperationMath_VIPS_OPERATION_MATH_ATANH: VipsOperationMath = 15;
+pub const VipsOperationMath_VIPS_OPERATION_MATH_LAST: VipsOperationMath = 16;
 pub type VipsOperationMath = u32;
 pub const VipsOperationMath2_VIPS_OPERATION_MATH2_POW: VipsOperationMath2 = 0;
 pub const VipsOperationMath2_VIPS_OPERATION_MATH2_WOP: VipsOperationMath2 = 1;
-pub const VipsOperationMath2_VIPS_OPERATION_MATH2_LAST: VipsOperationMath2 = 2;
+pub const VipsOperationMath2_VIPS_OPERATION_MATH2_ATAN2: VipsOperationMath2 = 2;
+pub const VipsOperationMath2_VIPS_OPERATION_MATH2_LAST: VipsOperationMath2 = 3;
 pub type VipsOperationMath2 = u32;
 pub const VipsOperationRound_VIPS_OPERATION_ROUND_RINT: VipsOperationRound = 0;
 pub const VipsOperationRound_VIPS_OPERATION_ROUND_CEIL: VipsOperationRound = 1;
@@ -67301,6 +67373,14 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    pub fn vips_atan2(
+        left: *mut VipsImage,
+        right: *mut VipsImage,
+        out: *mut *mut VipsImage,
+        ...
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
     pub fn vips_math2_const(
         in_: *mut VipsImage,
         out: *mut *mut VipsImage,
@@ -67329,6 +67409,15 @@ extern "C" {
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
+    pub fn vips_atan2_const(
+        in_: *mut VipsImage,
+        out: *mut *mut VipsImage,
+        c: *const f64,
+        n: ::std::os::raw::c_int,
+        ...
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
     pub fn vips_math2_const1(
         in_: *mut VipsImage,
         out: *mut *mut VipsImage,
@@ -67347,6 +67436,14 @@ extern "C" {
 }
 extern "C" {
     pub fn vips_wop_const1(
+        in_: *mut VipsImage,
+        out: *mut *mut VipsImage,
+        c: f64,
+        ...
+    ) -> ::std::os::raw::c_int;
+}
+extern "C" {
+    pub fn vips_atan2_const1(
         in_: *mut VipsImage,
         out: *mut *mut VipsImage,
         c: f64,

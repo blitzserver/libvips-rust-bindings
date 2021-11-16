@@ -249,6 +249,20 @@ pub enum Extend {
 }
 
 #[derive(Copy, Clone, Debug, FromPrimitive, ToPrimitive)]
+pub enum FailOn {
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0
+    None = 0,
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    Truncated = 1,
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    Error = 2,
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    Warning = 3,
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    Last = 4,
+}
+
+#[derive(Copy, Clone, Debug, FromPrimitive, ToPrimitive)]
 pub enum ForeignDzContainer {
     ///  `F` -> VIPS_FOREIGN_DZ_CONTAINER_FS = 0
     F = 0,
@@ -282,8 +296,10 @@ pub enum ForeignDzLayout {
     Google = 2,
     ///  `Iiif` -> VIPS_FOREIGN_DZ_LAYOUT_IIIF = 3
     Iiif = 3,
-    ///  `Last` -> VIPS_FOREIGN_DZ_LAYOUT_LAST = 4
-    Last = 4,
+    ///  `Iiif3` -> VIPS_FOREIGN_DZ_LAYOUT_IIIF3 = 4
+    Iiif3 = 4,
+    ///  `Last` -> VIPS_FOREIGN_DZ_LAYOUT_LAST = 5
+    Last = 5,
 }
 
 #[derive(Copy, Clone, Debug, FromPrimitive, ToPrimitive)]
@@ -314,6 +330,20 @@ pub enum ForeignPngFilter {
     Paeth = 128,
     ///  `All` -> VIPS_FOREIGN_PNG_FILTER_ALL = 248
     All = 248,
+}
+
+#[derive(Copy, Clone, Debug, FromPrimitive, ToPrimitive)]
+pub enum ForeignPpmFormat {
+    ///  `Pbm` -> VIPS_FOREIGN_PPM_FORMAT_PBM = 0
+    Pbm = 0,
+    ///  `Pgm` -> VIPS_FOREIGN_PPM_FORMAT_PGM = 1
+    Pgm = 1,
+    ///  `Ppm` -> VIPS_FOREIGN_PPM_FORMAT_PPM = 2
+    Ppm = 2,
+    ///  `Pfm` -> VIPS_FOREIGN_PPM_FORMAT_PFM = 3
+    Pfm = 3,
+    ///  `Last` -> VIPS_FOREIGN_PPM_FORMAT_LAST = 4
+    Last = 4,
 }
 
 #[derive(Copy, Clone, Debug, FromPrimitive, ToPrimitive)]
@@ -558,8 +588,20 @@ pub enum OperationMath {
     Exp = 8,
     ///  `Exp10` -> VIPS_OPERATION_MATH_EXP10 = 9
     Exp10 = 9,
-    ///  `Last` -> VIPS_OPERATION_MATH_LAST = 10
-    Last = 10,
+    ///  `Sinh` -> VIPS_OPERATION_MATH_SINH = 10
+    Sinh = 10,
+    ///  `Cosh` -> VIPS_OPERATION_MATH_COSH = 11
+    Cosh = 11,
+    ///  `Tanh` -> VIPS_OPERATION_MATH_TANH = 12
+    Tanh = 12,
+    ///  `Asinh` -> VIPS_OPERATION_MATH_ASINH = 13
+    Asinh = 13,
+    ///  `Acosh` -> VIPS_OPERATION_MATH_ACOSH = 14
+    Acosh = 14,
+    ///  `Atanh` -> VIPS_OPERATION_MATH_ATANH = 15
+    Atanh = 15,
+    ///  `Last` -> VIPS_OPERATION_MATH_LAST = 16
+    Last = 16,
 }
 
 #[derive(Copy, Clone, Debug, FromPrimitive, ToPrimitive)]
@@ -568,8 +610,10 @@ pub enum OperationMath2 {
     Pow = 0,
     ///  `Wop` -> VIPS_OPERATION_MATH2_WOP = 1
     Wop = 1,
-    ///  `Last` -> VIPS_OPERATION_MATH2_LAST = 2
-    Last = 2,
+    ///  `Atan2` -> VIPS_OPERATION_MATH2_ATAN2 = 2
+    Atan2 = 2,
+    ///  `Last` -> VIPS_OPERATION_MATH2_LAST = 3
+    Last = 3,
 }
 
 #[derive(Copy, Clone, Debug, FromPrimitive, ToPrimitive)]
@@ -923,7 +967,8 @@ pub fn boolean(
 /// math_2: `OperationMath2` -> math to perform
 ///  `Pow` -> VIPS_OPERATION_MATH2_POW = 0 [DEFAULT]
 ///  `Wop` -> VIPS_OPERATION_MATH2_WOP = 1
-///  `Last` -> VIPS_OPERATION_MATH2_LAST = 2
+///  `Atan2` -> VIPS_OPERATION_MATH2_ATAN2 = 2
+///  `Last` -> VIPS_OPERATION_MATH2_LAST = 3
 /// returns `VipsImage` - Output image
 pub fn math_2(left: &VipsImage, right: &VipsImage, math_2: OperationMath2) -> Result<VipsImage> {
     unsafe {
@@ -1053,7 +1098,13 @@ pub fn invert(inp: &VipsImage) -> Result<VipsImage> {
 ///  `Log10` -> VIPS_OPERATION_MATH_LOG10 = 7
 ///  `Exp` -> VIPS_OPERATION_MATH_EXP = 8
 ///  `Exp10` -> VIPS_OPERATION_MATH_EXP10 = 9
-///  `Last` -> VIPS_OPERATION_MATH_LAST = 10
+///  `Sinh` -> VIPS_OPERATION_MATH_SINH = 10
+///  `Cosh` -> VIPS_OPERATION_MATH_COSH = 11
+///  `Tanh` -> VIPS_OPERATION_MATH_TANH = 12
+///  `Asinh` -> VIPS_OPERATION_MATH_ASINH = 13
+///  `Acosh` -> VIPS_OPERATION_MATH_ACOSH = 14
+///  `Atanh` -> VIPS_OPERATION_MATH_ATANH = 15
+///  `Last` -> VIPS_OPERATION_MATH_LAST = 16
 /// returns `VipsImage` - Output image
 pub fn math(inp: &VipsImage, math: OperationMath) -> Result<VipsImage> {
     unsafe {
@@ -1227,7 +1278,8 @@ pub fn boolean_const(
 /// math_2: `OperationMath2` -> math to perform
 ///  `Pow` -> VIPS_OPERATION_MATH2_POW = 0 [DEFAULT]
 ///  `Wop` -> VIPS_OPERATION_MATH2_WOP = 1
-///  `Last` -> VIPS_OPERATION_MATH2_LAST = 2
+///  `Atan2` -> VIPS_OPERATION_MATH2_ATAN2 = 2
+///  `Last` -> VIPS_OPERATION_MATH2_LAST = 3
 /// c: `&mut [f64]` -> Array of constants
 /// returns `VipsImage` - Output image
 pub fn math_2_const(inp: &VipsImage, math_2: OperationMath2, c: &mut [f64]) -> Result<VipsImage> {
@@ -5482,10 +5534,10 @@ pub fn gaussmat_with_opts(
     }
 }
 
-/// VipsLogmat (logmat), make a laplacian of gaussian image
-/// sigma: `f64` -> Radius of Logmatian
+/// VipsLogmat (logmat), make a Laplacian of Gaussian image
+/// sigma: `f64` -> Radius of Gaussian
 /// min: 0.000001, max: 10000, default: 1
-/// min_ampl: `f64` -> Minimum amplitude of Logmatian
+/// min_ampl: `f64` -> Minimum amplitude of Gaussian
 /// min: 0.000001, max: 10000, default: 0.1
 /// returns `VipsImage` - Output image
 pub fn logmat(sigma: f64, min_ampl: f64) -> Result<VipsImage> {
@@ -5506,7 +5558,7 @@ pub fn logmat(sigma: f64, min_ampl: f64) -> Result<VipsImage> {
 /// Options for logmat operation
 #[derive(Clone, Debug)]
 pub struct LogmatOptions {
-    /// separable: `bool` -> Generate separable Logmatian
+    /// separable: `bool` -> Generate separable Gaussian
     /// default: false
     pub separable: bool,
     /// precision: `Precision` -> Generate with this precision
@@ -5526,10 +5578,10 @@ impl std::default::Default for LogmatOptions {
     }
 }
 
-/// VipsLogmat (logmat), make a laplacian of gaussian image
-/// sigma: `f64` -> Radius of Logmatian
+/// VipsLogmat (logmat), make a Laplacian of Gaussian image
+/// sigma: `f64` -> Radius of Gaussian
 /// min: 0.000001, max: 10000, default: 1
-/// min_ampl: `f64` -> Minimum amplitude of Logmatian
+/// min_ampl: `f64` -> Minimum amplitude of Gaussian
 /// min: 0.000001, max: 10000, default: 0.1
 /// logmat_options: `&LogmatOptions` -> optional arguments
 /// returns `VipsImage` - Output image
@@ -7997,9 +8049,13 @@ pub struct CsvloadOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for CsvloadOptions {
@@ -8012,7 +8068,7 @@ impl std::default::Default for CsvloadOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -8047,8 +8103,8 @@ pub fn csvload_with_opts(filename: &str, csvload_options: &CsvloadOptions) -> Re
         let access_in: i32 = csvload_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if csvload_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = csvload_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_csvload(
             filename_in.as_ptr(),
@@ -8067,8 +8123,8 @@ pub fn csvload_with_opts(filename: &str, csvload_options: &CsvloadOptions) -> Re
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -8125,9 +8181,13 @@ pub struct CsvloadSourceOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for CsvloadSourceOptions {
@@ -8140,7 +8200,7 @@ impl std::default::Default for CsvloadSourceOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -8178,8 +8238,8 @@ pub fn csvload_source_with_opts(
         let access_in: i32 = csvload_source_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if csvload_source_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = csvload_source_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_csvload_source(
             source_in,
@@ -8198,8 +8258,8 @@ pub fn csvload_source_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -8246,9 +8306,13 @@ pub struct MatrixloadOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for MatrixloadOptions {
@@ -8257,7 +8321,7 @@ impl std::default::Default for MatrixloadOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -8283,8 +8347,8 @@ pub fn matrixload_with_opts(
         let access_in: i32 = matrixload_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if matrixload_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = matrixload_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_matrixload(
             filename_in.as_ptr(),
@@ -8295,8 +8359,8 @@ pub fn matrixload_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -8343,9 +8407,13 @@ pub struct MatrixloadSourceOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for MatrixloadSourceOptions {
@@ -8354,7 +8422,7 @@ impl std::default::Default for MatrixloadSourceOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -8384,8 +8452,8 @@ pub fn matrixload_source_with_opts(
         let access_in: i32 = matrixload_source_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if matrixload_source_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = matrixload_source_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_matrixload_source(
             source_in,
@@ -8396,8 +8464,8 @@ pub fn matrixload_source_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -8500,9 +8568,13 @@ pub struct RawloadOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for RawloadOptions {
@@ -8514,7 +8586,7 @@ impl std::default::Default for RawloadOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -8561,8 +8633,8 @@ pub fn rawload_with_opts(
         let access_in: i32 = rawload_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if rawload_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = rawload_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_rawload(
             filename_in.as_ptr(),
@@ -8582,8 +8654,8 @@ pub fn rawload_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -8630,9 +8702,13 @@ pub struct VipsloadOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for VipsloadOptions {
@@ -8641,7 +8717,7 @@ impl std::default::Default for VipsloadOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -8664,8 +8740,8 @@ pub fn vipsload_with_opts(filename: &str, vipsload_options: &VipsloadOptions) ->
         let access_in: i32 = vipsload_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if vipsload_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = vipsload_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_vipsload(
             filename_in.as_ptr(),
@@ -8676,8 +8752,8 @@ pub fn vipsload_with_opts(filename: &str, vipsload_options: &VipsloadOptions) ->
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -8724,9 +8800,13 @@ pub struct VipsloadSourceOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for VipsloadSourceOptions {
@@ -8735,7 +8815,7 @@ impl std::default::Default for VipsloadSourceOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -8761,8 +8841,8 @@ pub fn vipsload_source_with_opts(
         let access_in: i32 = vipsload_source_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if vipsload_source_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = vipsload_source_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_vipsload_source(
             source_in,
@@ -8773,8 +8853,8 @@ pub fn vipsload_source_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -8821,9 +8901,13 @@ pub struct AnalyzeloadOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for AnalyzeloadOptions {
@@ -8832,7 +8916,7 @@ impl std::default::Default for AnalyzeloadOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -8858,8 +8942,8 @@ pub fn analyzeload_with_opts(
         let access_in: i32 = analyzeload_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if analyzeload_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = analyzeload_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_analyzeload(
             filename_in.as_ptr(),
@@ -8870,8 +8954,8 @@ pub fn analyzeload_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -8882,7 +8966,7 @@ pub fn analyzeload_with_opts(
     }
 }
 
-/// VipsForeignLoadPpmFile (ppmload), load ppm from file (.ppm, .pgm, .pbm, .pfm), priority=200, is_a, get_flags, header, load
+/// VipsForeignLoadPpmFile (ppmload), load ppm from file (.pbm, .pgm, .ppm, .pfm), priority=200, is_a, get_flags, header, load
 /// filename: `&str` -> Filename to load from
 /// returns `VipsImage` - Output image
 pub fn ppmload(filename: &str) -> Result<VipsImage> {
@@ -8918,9 +9002,13 @@ pub struct PpmloadOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for PpmloadOptions {
@@ -8929,12 +9017,12 @@ impl std::default::Default for PpmloadOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
 
-/// VipsForeignLoadPpmFile (ppmload), load ppm from file (.ppm, .pgm, .pbm, .pfm), priority=200, is_a, get_flags, header, load
+/// VipsForeignLoadPpmFile (ppmload), load ppm from file (.pbm, .pgm, .ppm, .pfm), priority=200, is_a, get_flags, header, load
 /// filename: `&str` -> Filename to load from
 /// ppmload_options: `&PpmloadOptions` -> optional arguments
 /// returns `VipsImage` - Output image
@@ -8952,8 +9040,8 @@ pub fn ppmload_with_opts(filename: &str, ppmload_options: &PpmloadOptions) -> Re
         let access_in: i32 = ppmload_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if ppmload_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = ppmload_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_ppmload(
             filename_in.as_ptr(),
@@ -8964,8 +9052,8 @@ pub fn ppmload_with_opts(filename: &str, ppmload_options: &PpmloadOptions) -> Re
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -8976,7 +9064,7 @@ pub fn ppmload_with_opts(filename: &str, ppmload_options: &PpmloadOptions) -> Re
     }
 }
 
-/// VipsForeignLoadPpmSource (ppmload_source), load ppm base class (.ppm, .pgm, .pbm, .pfm), priority=200, is_a_source, get_flags, header, load
+/// VipsForeignLoadPpmSource (ppmload_source), load ppm base class (.pbm, .pgm, .ppm, .pfm), priority=200, is_a_source, get_flags, header, load
 /// source: `&VipsSource` -> Source to load from
 /// returns `VipsImage` - Output image
 pub fn ppmload_source(source: &VipsSource) -> Result<VipsImage> {
@@ -9012,9 +9100,13 @@ pub struct PpmloadSourceOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for PpmloadSourceOptions {
@@ -9023,12 +9115,12 @@ impl std::default::Default for PpmloadSourceOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
 
-/// VipsForeignLoadPpmSource (ppmload_source), load ppm base class (.ppm, .pgm, .pbm, .pfm), priority=200, is_a_source, get_flags, header, load
+/// VipsForeignLoadPpmSource (ppmload_source), load ppm base class (.pbm, .pgm, .ppm, .pfm), priority=200, is_a_source, get_flags, header, load
 /// source: `&VipsSource` -> Source to load from
 /// ppmload_source_options: `&PpmloadSourceOptions` -> optional arguments
 /// returns `VipsImage` - Output image
@@ -9049,8 +9141,8 @@ pub fn ppmload_source_with_opts(
         let access_in: i32 = ppmload_source_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if ppmload_source_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = ppmload_source_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_ppmload_source(
             source_in,
@@ -9061,8 +9153,8 @@ pub fn ppmload_source_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -9109,9 +9201,13 @@ pub struct RadloadOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for RadloadOptions {
@@ -9120,7 +9216,7 @@ impl std::default::Default for RadloadOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -9143,8 +9239,8 @@ pub fn radload_with_opts(filename: &str, radload_options: &RadloadOptions) -> Re
         let access_in: i32 = radload_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if radload_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = radload_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_radload(
             filename_in.as_ptr(),
@@ -9155,8 +9251,8 @@ pub fn radload_with_opts(filename: &str, radload_options: &RadloadOptions) -> Re
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -9204,9 +9300,13 @@ pub struct RadloadBufferOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for RadloadBufferOptions {
@@ -9215,7 +9315,7 @@ impl std::default::Default for RadloadBufferOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -9241,8 +9341,8 @@ pub fn radload_buffer_with_opts(
         let access_in: i32 = radload_buffer_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if radload_buffer_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = radload_buffer_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_radload_buffer(
             buffer_in,
@@ -9254,8 +9354,8 @@ pub fn radload_buffer_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -9302,9 +9402,13 @@ pub struct RadloadSourceOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for RadloadSourceOptions {
@@ -9313,7 +9417,7 @@ impl std::default::Default for RadloadSourceOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -9339,8 +9443,8 @@ pub fn radload_source_with_opts(
         let access_in: i32 = radload_source_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if radload_source_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = radload_source_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_radload_source(
             source_in,
@@ -9351,8 +9455,8 @@ pub fn radload_source_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -9408,9 +9512,13 @@ pub struct SvgloadOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for SvgloadOptions {
@@ -9422,7 +9530,7 @@ impl std::default::Default for SvgloadOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -9454,8 +9562,8 @@ pub fn svgload_with_opts(filename: &str, svgload_options: &SvgloadOptions) -> Re
         let access_in: i32 = svgload_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if svgload_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = svgload_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_svgload(
             filename_in.as_ptr(),
@@ -9472,8 +9580,8 @@ pub fn svgload_with_opts(filename: &str, svgload_options: &SvgloadOptions) -> Re
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -9530,9 +9638,13 @@ pub struct SvgloadBufferOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for SvgloadBufferOptions {
@@ -9544,7 +9656,7 @@ impl std::default::Default for SvgloadBufferOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -9583,8 +9695,8 @@ pub fn svgload_buffer_with_opts(
         let access_in: i32 = svgload_buffer_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if svgload_buffer_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = svgload_buffer_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_svgload_buffer(
             buffer_in,
@@ -9602,8 +9714,8 @@ pub fn svgload_buffer_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -9656,9 +9768,13 @@ pub struct GifloadOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for GifloadOptions {
@@ -9669,7 +9785,7 @@ impl std::default::Default for GifloadOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -9698,8 +9814,8 @@ pub fn gifload_with_opts(filename: &str, gifload_options: &GifloadOptions) -> Re
         let access_in: i32 = gifload_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if gifload_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = gifload_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_gifload(
             filename_in.as_ptr(),
@@ -9714,8 +9830,8 @@ pub fn gifload_with_opts(filename: &str, gifload_options: &GifloadOptions) -> Re
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -9769,9 +9885,13 @@ pub struct GifloadBufferOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for GifloadBufferOptions {
@@ -9782,7 +9902,7 @@ impl std::default::Default for GifloadBufferOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -9814,8 +9934,8 @@ pub fn gifload_buffer_with_opts(
         let access_in: i32 = gifload_buffer_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if gifload_buffer_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = gifload_buffer_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_gifload_buffer(
             buffer_in,
@@ -9831,8 +9951,8 @@ pub fn gifload_buffer_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -9885,9 +10005,13 @@ pub struct GifloadSourceOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for GifloadSourceOptions {
@@ -9898,7 +10022,7 @@ impl std::default::Default for GifloadSourceOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -9930,8 +10054,8 @@ pub fn gifload_source_with_opts(
         let access_in: i32 = gifload_source_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if gifload_source_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = gifload_source_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_gifload_source(
             source_in,
@@ -9946,8 +10070,8 @@ pub fn gifload_source_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -9997,9 +10121,13 @@ pub struct PngloadOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for PngloadOptions {
@@ -10009,7 +10137,7 @@ impl std::default::Default for PngloadOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -10035,8 +10163,8 @@ pub fn pngload_with_opts(filename: &str, pngload_options: &PngloadOptions) -> Re
         let access_in: i32 = pngload_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if pngload_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = pngload_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_pngload(
             filename_in.as_ptr(),
@@ -10049,8 +10177,8 @@ pub fn pngload_with_opts(filename: &str, pngload_options: &PngloadOptions) -> Re
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -10101,9 +10229,13 @@ pub struct PngloadBufferOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for PngloadBufferOptions {
@@ -10113,7 +10245,7 @@ impl std::default::Default for PngloadBufferOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -10146,8 +10278,8 @@ pub fn pngload_buffer_with_opts(
         let access_in: i32 = pngload_buffer_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if pngload_buffer_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = pngload_buffer_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_pngload_buffer(
             buffer_in,
@@ -10161,8 +10293,8 @@ pub fn pngload_buffer_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -10212,9 +10344,13 @@ pub struct PngloadSourceOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for PngloadSourceOptions {
@@ -10224,7 +10360,7 @@ impl std::default::Default for PngloadSourceOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -10257,8 +10393,8 @@ pub fn pngload_source_with_opts(
         let access_in: i32 = pngload_source_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if pngload_source_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = pngload_source_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_pngload_source(
             source_in,
@@ -10271,8 +10407,8 @@ pub fn pngload_source_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -10325,9 +10461,13 @@ pub struct JpegloadOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for JpegloadOptions {
@@ -10338,7 +10478,7 @@ impl std::default::Default for JpegloadOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -10367,8 +10507,8 @@ pub fn jpegload_with_opts(filename: &str, jpegload_options: &JpegloadOptions) ->
         let access_in: i32 = jpegload_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if jpegload_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = jpegload_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_jpegload(
             filename_in.as_ptr(),
@@ -10383,8 +10523,8 @@ pub fn jpegload_with_opts(filename: &str, jpegload_options: &JpegloadOptions) ->
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -10438,9 +10578,13 @@ pub struct JpegloadBufferOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for JpegloadBufferOptions {
@@ -10451,7 +10595,7 @@ impl std::default::Default for JpegloadBufferOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -10487,8 +10631,8 @@ pub fn jpegload_buffer_with_opts(
         let access_in: i32 = jpegload_buffer_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if jpegload_buffer_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = jpegload_buffer_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_jpegload_buffer(
             buffer_in,
@@ -10504,8 +10648,8 @@ pub fn jpegload_buffer_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -10516,7 +10660,7 @@ pub fn jpegload_buffer_with_opts(
     }
 }
 
-/// VipsForeignLoadWebpFile (webpload), load webp from file (.webp), priority=-50, is_a, get_flags, get_flags_filename, header, load
+/// VipsForeignLoadWebpFile (webpload), load webp from file (.webp), priority=200, is_a, get_flags, get_flags_filename, header, load
 /// filename: `&str` -> Filename to load from
 /// returns `VipsImage` - Output image
 pub fn webpload(filename: &str) -> Result<VipsImage> {
@@ -10561,9 +10705,13 @@ pub struct WebploadOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for WebploadOptions {
@@ -10575,12 +10723,12 @@ impl std::default::Default for WebploadOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
 
-/// VipsForeignLoadWebpFile (webpload), load webp from file (.webp), priority=-50, is_a, get_flags, get_flags_filename, header, load
+/// VipsForeignLoadWebpFile (webpload), load webp from file (.webp), priority=200, is_a, get_flags, get_flags_filename, header, load
 /// filename: `&str` -> Filename to load from
 /// webpload_options: `&WebploadOptions` -> optional arguments
 /// returns `VipsImage` - Output image
@@ -10607,8 +10755,8 @@ pub fn webpload_with_opts(filename: &str, webpload_options: &WebploadOptions) ->
         let access_in: i32 = webpload_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if webpload_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = webpload_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_webpload(
             filename_in.as_ptr(),
@@ -10625,8 +10773,8 @@ pub fn webpload_with_opts(filename: &str, webpload_options: &WebploadOptions) ->
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -10637,7 +10785,7 @@ pub fn webpload_with_opts(filename: &str, webpload_options: &WebploadOptions) ->
     }
 }
 
-/// VipsForeignLoadWebpBuffer (webpload_buffer), load webp from buffer, priority=-50, is_a_buffer, get_flags, get_flags_filename, header, load
+/// VipsForeignLoadWebpBuffer (webpload_buffer), load webp from buffer, priority=200, is_a_buffer, get_flags, get_flags_filename, header, load
 /// buffer: `&[u8]` -> Buffer to load from
 /// returns `VipsImage` - Output image
 pub fn webpload_buffer(buffer: &[u8]) -> Result<VipsImage> {
@@ -10683,9 +10831,13 @@ pub struct WebploadBufferOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for WebploadBufferOptions {
@@ -10697,12 +10849,12 @@ impl std::default::Default for WebploadBufferOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
 
-/// VipsForeignLoadWebpBuffer (webpload_buffer), load webp from buffer, priority=-50, is_a_buffer, get_flags, get_flags_filename, header, load
+/// VipsForeignLoadWebpBuffer (webpload_buffer), load webp from buffer, priority=200, is_a_buffer, get_flags, get_flags_filename, header, load
 /// buffer: `&[u8]` -> Buffer to load from
 /// webpload_buffer_options: `&WebploadBufferOptions` -> optional arguments
 /// returns `VipsImage` - Output image
@@ -10732,8 +10884,8 @@ pub fn webpload_buffer_with_opts(
         let access_in: i32 = webpload_buffer_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if webpload_buffer_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = webpload_buffer_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_webpload_buffer(
             buffer_in,
@@ -10751,8 +10903,8 @@ pub fn webpload_buffer_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -10763,7 +10915,7 @@ pub fn webpload_buffer_with_opts(
     }
 }
 
-/// VipsForeignLoadWebpSource (webpload_source), load webp from source, priority=-50, is_a_source, get_flags, get_flags_filename, header, load
+/// VipsForeignLoadWebpSource (webpload_source), load webp from source, priority=200, is_a_source, get_flags, get_flags_filename, header, load
 /// source: `&VipsSource` -> Source to load from
 /// returns `VipsImage` - Output image
 pub fn webpload_source(source: &VipsSource) -> Result<VipsImage> {
@@ -10808,9 +10960,13 @@ pub struct WebploadSourceOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for WebploadSourceOptions {
@@ -10822,12 +10978,12 @@ impl std::default::Default for WebploadSourceOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
 
-/// VipsForeignLoadWebpSource (webpload_source), load webp from source, priority=-50, is_a_source, get_flags, get_flags_filename, header, load
+/// VipsForeignLoadWebpSource (webpload_source), load webp from source, priority=200, is_a_source, get_flags, get_flags_filename, header, load
 /// source: `&VipsSource` -> Source to load from
 /// webpload_source_options: `&WebploadSourceOptions` -> optional arguments
 /// returns `VipsImage` - Output image
@@ -10857,8 +11013,8 @@ pub fn webpload_source_with_opts(
         let access_in: i32 = webpload_source_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if webpload_source_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = webpload_source_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_webpload_source(
             source_in,
@@ -10875,8 +11031,8 @@ pub fn webpload_source_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -10935,9 +11091,13 @@ pub struct TiffloadOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for TiffloadOptions {
@@ -10950,7 +11110,7 @@ impl std::default::Default for TiffloadOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -10985,8 +11145,8 @@ pub fn tiffload_with_opts(filename: &str, tiffload_options: &TiffloadOptions) ->
         let access_in: i32 = tiffload_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if tiffload_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = tiffload_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_tiffload(
             filename_in.as_ptr(),
@@ -11005,8 +11165,8 @@ pub fn tiffload_with_opts(filename: &str, tiffload_options: &TiffloadOptions) ->
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -11066,9 +11226,13 @@ pub struct TiffloadBufferOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for TiffloadBufferOptions {
@@ -11081,7 +11245,7 @@ impl std::default::Default for TiffloadBufferOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -11123,8 +11287,8 @@ pub fn tiffload_buffer_with_opts(
         let access_in: i32 = tiffload_buffer_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if tiffload_buffer_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = tiffload_buffer_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_tiffload_buffer(
             buffer_in,
@@ -11144,8 +11308,8 @@ pub fn tiffload_buffer_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -11204,9 +11368,13 @@ pub struct TiffloadSourceOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for TiffloadSourceOptions {
@@ -11219,7 +11387,7 @@ impl std::default::Default for TiffloadSourceOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -11261,8 +11429,8 @@ pub fn tiffload_source_with_opts(
         let access_in: i32 = tiffload_source_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if tiffload_source_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = tiffload_source_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_tiffload_source(
             source_in,
@@ -11281,8 +11449,8 @@ pub fn tiffload_source_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -11337,9 +11505,13 @@ pub struct MagickloadOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for MagickloadOptions {
@@ -11351,7 +11523,7 @@ impl std::default::Default for MagickloadOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -11386,8 +11558,8 @@ pub fn magickload_with_opts(
         let access_in: i32 = magickload_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if magickload_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = magickload_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_magickload(
             filename_in.as_ptr(),
@@ -11404,8 +11576,8 @@ pub fn magickload_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -11461,9 +11633,13 @@ pub struct MagickloadBufferOptions {
     ///  `SequentialUnbuffered` -> VIPS_ACCESS_SEQUENTIAL_UNBUFFERED = 2
     ///  `Last` -> VIPS_ACCESS_LAST = 3
     pub access: Access,
-    /// fail: `bool` -> Fail on first error
-    /// default: false
-    pub fail: bool,
+    /// fail_on: `FailOn` -> Error level to fail on
+    ///  `None` -> VIPS_FAIL_ON_NONE = 0 [DEFAULT]
+    ///  `Truncated` -> VIPS_FAIL_ON_TRUNCATED = 1
+    ///  `Error` -> VIPS_FAIL_ON_ERROR = 2
+    ///  `Warning` -> VIPS_FAIL_ON_WARNING = 3
+    ///  `Last` -> VIPS_FAIL_ON_LAST = 4
+    pub fail_on: FailOn,
 }
 
 impl std::default::Default for MagickloadBufferOptions {
@@ -11475,7 +11651,7 @@ impl std::default::Default for MagickloadBufferOptions {
             flags: ForeignFlags::None,
             memory: false,
             access: Access::Random,
-            fail: false,
+            fail_on: FailOn::None,
         }
     }
 }
@@ -11514,8 +11690,8 @@ pub fn magickload_buffer_with_opts(
         let access_in: i32 = magickload_buffer_options.access as i32;
         let access_in_name = utils::new_c_string("access")?;
 
-        let fail_in: i32 = if magickload_buffer_options.fail { 1 } else { 0 };
-        let fail_in_name = utils::new_c_string("fail")?;
+        let fail_on_in: i32 = magickload_buffer_options.fail_on as i32;
+        let fail_on_in_name = utils::new_c_string("fail-on")?;
 
         let vips_op_response = bindings::vips_magickload_buffer(
             buffer_in,
@@ -11533,8 +11709,8 @@ pub fn magickload_buffer_with_opts(
             memory_in,
             access_in_name.as_ptr(),
             access_in,
-            fail_in_name.as_ptr(),
-            fail_in,
+            fail_on_in_name.as_ptr(),
+            fail_on_in,
             NULL,
         );
         utils::result(
@@ -12254,7 +12430,7 @@ pub fn vipssave_target_with_opts(
     }
 }
 
-/// VipsForeignSavePpmFile (ppmsave), save image to ppm file (.ppm, .pgm, .pbm, .pfm), priority=0, rgb
+/// VipsForeignSavePpmFile (ppmsave), save image to ppm file (.pbm, .pgm, .ppm, .pfm), priority=0, rgb
 /// inp: `&VipsImage` -> Image to save
 /// filename: `&str` -> Filename to save to
 
@@ -12271,6 +12447,13 @@ pub fn ppmsave(inp: &VipsImage, filename: &str) -> Result<()> {
 /// Options for ppmsave operation
 #[derive(Clone, Debug)]
 pub struct PpmsaveOptions {
+    /// format: `ForeignPpmFormat` -> Format to save in
+    ///  `Pbm` -> VIPS_FOREIGN_PPM_FORMAT_PBM = 0
+    ///  `Pgm` -> VIPS_FOREIGN_PPM_FORMAT_PGM = 1
+    ///  `Ppm` -> VIPS_FOREIGN_PPM_FORMAT_PPM = 2 [DEFAULT]
+    ///  `Pfm` -> VIPS_FOREIGN_PPM_FORMAT_PFM = 3
+    ///  `Last` -> VIPS_FOREIGN_PPM_FORMAT_LAST = 4
+    pub format: ForeignPpmFormat,
     /// ascii: `bool` -> save as ascii
     /// default: false
     pub ascii: bool,
@@ -12290,6 +12473,7 @@ pub struct PpmsaveOptions {
 impl std::default::Default for PpmsaveOptions {
     fn default() -> Self {
         PpmsaveOptions {
+            format: ForeignPpmFormat::Ppm,
             ascii: false,
             bitdepth: i32::from(0),
             strip: false,
@@ -12299,7 +12483,7 @@ impl std::default::Default for PpmsaveOptions {
     }
 }
 
-/// VipsForeignSavePpmFile (ppmsave), save image to ppm file (.ppm, .pgm, .pbm, .pfm), priority=0, rgb
+/// VipsForeignSavePpmFile (ppmsave), save image to ppm file (.pbm, .pgm, .ppm, .pfm), priority=0, rgb
 /// inp: `&VipsImage` -> Image to save
 /// filename: `&str` -> Filename to save to
 /// ppmsave_options: `&PpmsaveOptions` -> optional arguments
@@ -12312,6 +12496,9 @@ pub fn ppmsave_with_opts(
     unsafe {
         let inp_in: *mut bindings::VipsImage = inp.ctx;
         let filename_in: CString = utils::new_c_string(filename)?;
+
+        let format_in: i32 = ppmsave_options.format as i32;
+        let format_in_name = utils::new_c_string("format")?;
 
         let ascii_in: i32 = if ppmsave_options.ascii { 1 } else { 0 };
         let ascii_in_name = utils::new_c_string("ascii")?;
@@ -12333,6 +12520,8 @@ pub fn ppmsave_with_opts(
         let vips_op_response = bindings::vips_ppmsave(
             inp_in,
             filename_in.as_ptr(),
+            format_in_name.as_ptr(),
+            format_in,
             ascii_in_name.as_ptr(),
             ascii_in,
             bitdepth_in_name.as_ptr(),
@@ -12349,7 +12538,7 @@ pub fn ppmsave_with_opts(
     }
 }
 
-/// VipsForeignSavePpmTarget (ppmsave_target), save to ppm (.ppm, .pgm, .pbm, .pfm), priority=0, rgb
+/// VipsForeignSavePpmTarget (ppmsave_target), save to ppm (.ppm), priority=0, rgb
 /// inp: `&VipsImage` -> Image to save
 /// target: `&VipsTarget` -> Target to save to
 
@@ -12366,6 +12555,13 @@ pub fn ppmsave_target(inp: &VipsImage, target: &VipsTarget) -> Result<()> {
 /// Options for ppmsave_target operation
 #[derive(Clone, Debug)]
 pub struct PpmsaveTargetOptions {
+    /// format: `ForeignPpmFormat` -> Format to save in
+    ///  `Pbm` -> VIPS_FOREIGN_PPM_FORMAT_PBM = 0
+    ///  `Pgm` -> VIPS_FOREIGN_PPM_FORMAT_PGM = 1
+    ///  `Ppm` -> VIPS_FOREIGN_PPM_FORMAT_PPM = 2 [DEFAULT]
+    ///  `Pfm` -> VIPS_FOREIGN_PPM_FORMAT_PFM = 3
+    ///  `Last` -> VIPS_FOREIGN_PPM_FORMAT_LAST = 4
+    pub format: ForeignPpmFormat,
     /// ascii: `bool` -> save as ascii
     /// default: false
     pub ascii: bool,
@@ -12385,6 +12581,7 @@ pub struct PpmsaveTargetOptions {
 impl std::default::Default for PpmsaveTargetOptions {
     fn default() -> Self {
         PpmsaveTargetOptions {
+            format: ForeignPpmFormat::Ppm,
             ascii: false,
             bitdepth: i32::from(0),
             strip: false,
@@ -12394,7 +12591,7 @@ impl std::default::Default for PpmsaveTargetOptions {
     }
 }
 
-/// VipsForeignSavePpmTarget (ppmsave_target), save to ppm (.ppm, .pgm, .pbm, .pfm), priority=0, rgb
+/// VipsForeignSavePpmTarget (ppmsave_target), save to ppm (.ppm), priority=0, rgb
 /// inp: `&VipsImage` -> Image to save
 /// target: `&VipsTarget` -> Target to save to
 /// ppmsave_target_options: `&PpmsaveTargetOptions` -> optional arguments
@@ -12407,6 +12604,9 @@ pub fn ppmsave_target_with_opts(
     unsafe {
         let inp_in: *mut bindings::VipsImage = inp.ctx;
         let target_in: *mut bindings::VipsTarget = target.ctx;
+
+        let format_in: i32 = ppmsave_target_options.format as i32;
+        let format_in_name = utils::new_c_string("format")?;
 
         let ascii_in: i32 = if ppmsave_target_options.ascii { 1 } else { 0 };
         let ascii_in_name = utils::new_c_string("ascii")?;
@@ -12428,6 +12628,8 @@ pub fn ppmsave_target_with_opts(
         let vips_op_response = bindings::vips_ppmsave_target(
             inp_in,
             target_in,
+            format_in_name.as_ptr(),
+            format_in,
             ascii_in_name.as_ptr(),
             ascii_in,
             bitdepth_in_name.as_ptr(),
@@ -12708,7 +12910,8 @@ pub struct DzsaveOptions {
     ///  `Zoomify` -> VIPS_FOREIGN_DZ_LAYOUT_ZOOMIFY = 1
     ///  `Google` -> VIPS_FOREIGN_DZ_LAYOUT_GOOGLE = 2
     ///  `Iiif` -> VIPS_FOREIGN_DZ_LAYOUT_IIIF = 3
-    ///  `Last` -> VIPS_FOREIGN_DZ_LAYOUT_LAST = 4
+    ///  `Iiif3` -> VIPS_FOREIGN_DZ_LAYOUT_IIIF3 = 4
+    ///  `Last` -> VIPS_FOREIGN_DZ_LAYOUT_LAST = 5
     pub layout: ForeignDzLayout,
     /// suffix: `String` -> Filename suffix for tiles
     pub suffix: String,
@@ -12955,9 +13158,12 @@ pub struct PngsaveOptions {
     /// dither: `f64` -> Amount of dithering
     /// min: 0, max: 1, default: 1
     pub dither: f64,
-    /// bitdepth: `i32` -> Write as a 1, 2, 4 or 8 bit image
-    /// min: 0, max: 8, default: 0
+    /// bitdepth: `i32` -> Write as a 1, 2, 4, 8 or 16 bit image
+    /// min: 0, max: 16, default: 0
     pub bitdepth: i32,
+    /// effort: `i32` -> Quantisation CPU effort
+    /// min: 1, max: 10, default: 7
+    pub effort: i32,
     /// strip: `bool` -> Strip all metadata from image
     /// default: false
     pub strip: bool,
@@ -12979,6 +13185,7 @@ impl std::default::Default for PngsaveOptions {
             q: i32::from(100),
             dither: f64::from(1),
             bitdepth: i32::from(0),
+            effort: i32::from(7),
             strip: false,
             background: Vec::new(),
             page_height: i32::from(0),
@@ -13024,6 +13231,9 @@ pub fn pngsave_with_opts(
         let bitdepth_in: i32 = pngsave_options.bitdepth;
         let bitdepth_in_name = utils::new_c_string("bitdepth")?;
 
+        let effort_in: i32 = pngsave_options.effort;
+        let effort_in_name = utils::new_c_string("effort")?;
+
         let strip_in: i32 = if pngsave_options.strip { 1 } else { 0 };
         let strip_in_name = utils::new_c_string("strip")?;
 
@@ -13054,6 +13264,8 @@ pub fn pngsave_with_opts(
             dither_in,
             bitdepth_in_name.as_ptr(),
             bitdepth_in,
+            effort_in_name.as_ptr(),
+            effort_in,
             strip_in_name.as_ptr(),
             strip_in,
             background_in_name.as_ptr(),
@@ -13113,9 +13325,12 @@ pub struct PngsaveBufferOptions {
     /// dither: `f64` -> Amount of dithering
     /// min: 0, max: 1, default: 1
     pub dither: f64,
-    /// bitdepth: `i32` -> Write as a 1, 2, 4 or 8 bit image
-    /// min: 0, max: 8, default: 0
+    /// bitdepth: `i32` -> Write as a 1, 2, 4, 8 or 16 bit image
+    /// min: 0, max: 16, default: 0
     pub bitdepth: i32,
+    /// effort: `i32` -> Quantisation CPU effort
+    /// min: 1, max: 10, default: 7
+    pub effort: i32,
     /// strip: `bool` -> Strip all metadata from image
     /// default: false
     pub strip: bool,
@@ -13137,6 +13352,7 @@ impl std::default::Default for PngsaveBufferOptions {
             q: i32::from(100),
             dither: f64::from(1),
             bitdepth: i32::from(0),
+            effort: i32::from(7),
             strip: false,
             background: Vec::new(),
             page_height: i32::from(0),
@@ -13185,6 +13401,9 @@ pub fn pngsave_buffer_with_opts(
         let bitdepth_in: i32 = pngsave_buffer_options.bitdepth;
         let bitdepth_in_name = utils::new_c_string("bitdepth")?;
 
+        let effort_in: i32 = pngsave_buffer_options.effort;
+        let effort_in_name = utils::new_c_string("effort")?;
+
         let strip_in: i32 = if pngsave_buffer_options.strip { 1 } else { 0 };
         let strip_in_name = utils::new_c_string("strip")?;
 
@@ -13216,6 +13435,8 @@ pub fn pngsave_buffer_with_opts(
             dither_in,
             bitdepth_in_name.as_ptr(),
             bitdepth_in,
+            effort_in_name.as_ptr(),
+            effort_in,
             strip_in_name.as_ptr(),
             strip_in,
             background_in_name.as_ptr(),
@@ -13274,9 +13495,12 @@ pub struct PngsaveTargetOptions {
     /// dither: `f64` -> Amount of dithering
     /// min: 0, max: 1, default: 1
     pub dither: f64,
-    /// bitdepth: `i32` -> Write as a 1, 2, 4 or 8 bit image
-    /// min: 0, max: 8, default: 0
+    /// bitdepth: `i32` -> Write as a 1, 2, 4, 8 or 16 bit image
+    /// min: 0, max: 16, default: 0
     pub bitdepth: i32,
+    /// effort: `i32` -> Quantisation CPU effort
+    /// min: 1, max: 10, default: 7
+    pub effort: i32,
     /// strip: `bool` -> Strip all metadata from image
     /// default: false
     pub strip: bool,
@@ -13298,6 +13522,7 @@ impl std::default::Default for PngsaveTargetOptions {
             q: i32::from(100),
             dither: f64::from(1),
             bitdepth: i32::from(0),
+            effort: i32::from(7),
             strip: false,
             background: Vec::new(),
             page_height: i32::from(0),
@@ -13347,6 +13572,9 @@ pub fn pngsave_target_with_opts(
         let bitdepth_in: i32 = pngsave_target_options.bitdepth;
         let bitdepth_in_name = utils::new_c_string("bitdepth")?;
 
+        let effort_in: i32 = pngsave_target_options.effort;
+        let effort_in_name = utils::new_c_string("effort")?;
+
         let strip_in: i32 = if pngsave_target_options.strip { 1 } else { 0 };
         let strip_in_name = utils::new_c_string("strip")?;
 
@@ -13377,6 +13605,8 @@ pub fn pngsave_target_with_opts(
             dither_in,
             bitdepth_in_name.as_ptr(),
             bitdepth_in,
+            effort_in_name.as_ptr(),
+            effort_in,
             strip_in_name.as_ptr(),
             strip_in,
             background_in_name.as_ptr(),
@@ -13435,6 +13665,9 @@ pub struct JpegsaveOptions {
     ///  `Off` -> VIPS_FOREIGN_SUBSAMPLE_OFF = 2
     ///  `Last` -> VIPS_FOREIGN_SUBSAMPLE_LAST = 3
     pub subsample_mode: ForeignSubsample,
+    /// restart_interval: `i32` -> Add restart markers every specified number of mcu
+    /// min: 0, max: 2147483647, default: 0
+    pub restart_interval: i32,
     /// strip: `bool` -> Strip all metadata from image
     /// default: false
     pub strip: bool,
@@ -13457,6 +13690,7 @@ impl std::default::Default for JpegsaveOptions {
             optimize_scans: false,
             quant_table: i32::from(0),
             subsample_mode: ForeignSubsample::Auto,
+            restart_interval: i32::from(0),
             strip: false,
             background: Vec::new(),
             page_height: i32::from(0),
@@ -13517,6 +13751,9 @@ pub fn jpegsave_with_opts(
         let subsample_mode_in: i32 = jpegsave_options.subsample_mode as i32;
         let subsample_mode_in_name = utils::new_c_string("subsample-mode")?;
 
+        let restart_interval_in: i32 = jpegsave_options.restart_interval;
+        let restart_interval_in_name = utils::new_c_string("restart-interval")?;
+
         let strip_in: i32 = if jpegsave_options.strip { 1 } else { 0 };
         let strip_in_name = utils::new_c_string("strip")?;
 
@@ -13549,6 +13786,8 @@ pub fn jpegsave_with_opts(
             quant_table_in,
             subsample_mode_in_name.as_ptr(),
             subsample_mode_in,
+            restart_interval_in_name.as_ptr(),
+            restart_interval_in,
             strip_in_name.as_ptr(),
             strip_in,
             background_in_name.as_ptr(),
@@ -13612,6 +13851,9 @@ pub struct JpegsaveBufferOptions {
     ///  `Off` -> VIPS_FOREIGN_SUBSAMPLE_OFF = 2
     ///  `Last` -> VIPS_FOREIGN_SUBSAMPLE_LAST = 3
     pub subsample_mode: ForeignSubsample,
+    /// restart_interval: `i32` -> Add restart markers every specified number of mcu
+    /// min: 0, max: 2147483647, default: 0
+    pub restart_interval: i32,
     /// strip: `bool` -> Strip all metadata from image
     /// default: false
     pub strip: bool,
@@ -13634,6 +13876,7 @@ impl std::default::Default for JpegsaveBufferOptions {
             optimize_scans: false,
             quant_table: i32::from(0),
             subsample_mode: ForeignSubsample::Auto,
+            restart_interval: i32::from(0),
             strip: false,
             background: Vec::new(),
             page_height: i32::from(0),
@@ -13701,6 +13944,9 @@ pub fn jpegsave_buffer_with_opts(
         let subsample_mode_in: i32 = jpegsave_buffer_options.subsample_mode as i32;
         let subsample_mode_in_name = utils::new_c_string("subsample-mode")?;
 
+        let restart_interval_in: i32 = jpegsave_buffer_options.restart_interval;
+        let restart_interval_in_name = utils::new_c_string("restart-interval")?;
+
         let strip_in: i32 = if jpegsave_buffer_options.strip { 1 } else { 0 };
         let strip_in_name = utils::new_c_string("strip")?;
 
@@ -13734,6 +13980,8 @@ pub fn jpegsave_buffer_with_opts(
             quant_table_in,
             subsample_mode_in_name.as_ptr(),
             subsample_mode_in,
+            restart_interval_in_name.as_ptr(),
+            restart_interval_in,
             strip_in_name.as_ptr(),
             strip_in,
             background_in_name.as_ptr(),
@@ -13796,6 +14044,9 @@ pub struct JpegsaveTargetOptions {
     ///  `Off` -> VIPS_FOREIGN_SUBSAMPLE_OFF = 2
     ///  `Last` -> VIPS_FOREIGN_SUBSAMPLE_LAST = 3
     pub subsample_mode: ForeignSubsample,
+    /// restart_interval: `i32` -> Add restart markers every specified number of mcu
+    /// min: 0, max: 2147483647, default: 0
+    pub restart_interval: i32,
     /// strip: `bool` -> Strip all metadata from image
     /// default: false
     pub strip: bool,
@@ -13818,6 +14069,7 @@ impl std::default::Default for JpegsaveTargetOptions {
             optimize_scans: false,
             quant_table: i32::from(0),
             subsample_mode: ForeignSubsample::Auto,
+            restart_interval: i32::from(0),
             strip: false,
             background: Vec::new(),
             page_height: i32::from(0),
@@ -13886,6 +14138,9 @@ pub fn jpegsave_target_with_opts(
         let subsample_mode_in: i32 = jpegsave_target_options.subsample_mode as i32;
         let subsample_mode_in_name = utils::new_c_string("subsample-mode")?;
 
+        let restart_interval_in: i32 = jpegsave_target_options.restart_interval;
+        let restart_interval_in_name = utils::new_c_string("restart-interval")?;
+
         let strip_in: i32 = if jpegsave_target_options.strip { 1 } else { 0 };
         let strip_in_name = utils::new_c_string("strip")?;
 
@@ -13918,6 +14173,8 @@ pub fn jpegsave_target_with_opts(
             quant_table_in,
             subsample_mode_in_name.as_ptr(),
             subsample_mode_in,
+            restart_interval_in_name.as_ptr(),
+            restart_interval_in,
             strip_in_name.as_ptr(),
             strip_in,
             background_in_name.as_ptr(),
@@ -13974,6 +14231,9 @@ pub struct JpegsaveMimeOptions {
     ///  `Off` -> VIPS_FOREIGN_SUBSAMPLE_OFF = 2
     ///  `Last` -> VIPS_FOREIGN_SUBSAMPLE_LAST = 3
     pub subsample_mode: ForeignSubsample,
+    /// restart_interval: `i32` -> Add restart markers every specified number of mcu
+    /// min: 0, max: 2147483647, default: 0
+    pub restart_interval: i32,
     /// strip: `bool` -> Strip all metadata from image
     /// default: false
     pub strip: bool,
@@ -13996,6 +14256,7 @@ impl std::default::Default for JpegsaveMimeOptions {
             optimize_scans: false,
             quant_table: i32::from(0),
             subsample_mode: ForeignSubsample::Auto,
+            restart_interval: i32::from(0),
             strip: false,
             background: Vec::new(),
             page_height: i32::from(0),
@@ -14061,6 +14322,9 @@ pub fn jpegsave_mime_with_opts(
         let subsample_mode_in: i32 = jpegsave_mime_options.subsample_mode as i32;
         let subsample_mode_in_name = utils::new_c_string("subsample-mode")?;
 
+        let restart_interval_in: i32 = jpegsave_mime_options.restart_interval;
+        let restart_interval_in_name = utils::new_c_string("restart-interval")?;
+
         let strip_in: i32 = if jpegsave_mime_options.strip { 1 } else { 0 };
         let strip_in_name = utils::new_c_string("strip")?;
 
@@ -14092,6 +14356,8 @@ pub fn jpegsave_mime_with_opts(
             quant_table_in,
             subsample_mode_in_name.as_ptr(),
             subsample_mode_in,
+            restart_interval_in_name.as_ptr(),
+            restart_interval_in,
             strip_in_name.as_ptr(),
             strip_in,
             background_in_name.as_ptr(),
@@ -14154,9 +14420,9 @@ pub struct WebpsaveOptions {
     /// kmax: `i32` -> Maximum number of frames between key frames
     /// min: 0, max: 2147483647, default: 2147483647
     pub kmax: i32,
-    /// reduction_effort: `i32` -> Level of CPU effort to reduce file size
+    /// effort: `i32` -> Level of CPU effort to reduce file size
     /// min: 0, max: 6, default: 4
-    pub reduction_effort: i32,
+    pub effort: i32,
     /// profile: `String` -> ICC profile to embed
     pub profile: String,
     /// strip: `bool` -> Strip all metadata from image
@@ -14181,7 +14447,7 @@ impl std::default::Default for WebpsaveOptions {
             min_size: false,
             kmin: i32::from(2147483646),
             kmax: i32::from(2147483647),
-            reduction_effort: i32::from(4),
+            effort: i32::from(4),
             profile: String::from("sRGB"),
             strip: false,
             background: Vec::new(),
@@ -14235,8 +14501,8 @@ pub fn webpsave_with_opts(
         let kmax_in: i32 = webpsave_options.kmax;
         let kmax_in_name = utils::new_c_string("kmax")?;
 
-        let reduction_effort_in: i32 = webpsave_options.reduction_effort;
-        let reduction_effort_in_name = utils::new_c_string("reduction-effort")?;
+        let effort_in: i32 = webpsave_options.effort;
+        let effort_in_name = utils::new_c_string("effort")?;
 
         let profile_in: CString = utils::new_c_string(&webpsave_options.profile)?;
         let profile_in_name = utils::new_c_string("profile")?;
@@ -14273,8 +14539,8 @@ pub fn webpsave_with_opts(
             kmin_in,
             kmax_in_name.as_ptr(),
             kmax_in,
-            reduction_effort_in_name.as_ptr(),
-            reduction_effort_in,
+            effort_in_name.as_ptr(),
+            effort_in,
             profile_in_name.as_ptr(),
             profile_in.as_ptr(),
             strip_in_name.as_ptr(),
@@ -14344,9 +14610,9 @@ pub struct WebpsaveBufferOptions {
     /// kmax: `i32` -> Maximum number of frames between key frames
     /// min: 0, max: 2147483647, default: 2147483647
     pub kmax: i32,
-    /// reduction_effort: `i32` -> Level of CPU effort to reduce file size
+    /// effort: `i32` -> Level of CPU effort to reduce file size
     /// min: 0, max: 6, default: 4
-    pub reduction_effort: i32,
+    pub effort: i32,
     /// profile: `String` -> ICC profile to embed
     pub profile: String,
     /// strip: `bool` -> Strip all metadata from image
@@ -14371,7 +14637,7 @@ impl std::default::Default for WebpsaveBufferOptions {
             min_size: false,
             kmin: i32::from(2147483646),
             kmax: i32::from(2147483647),
-            reduction_effort: i32::from(4),
+            effort: i32::from(4),
             profile: String::from("sRGB"),
             strip: false,
             background: Vec::new(),
@@ -14436,8 +14702,8 @@ pub fn webpsave_buffer_with_opts(
         let kmax_in: i32 = webpsave_buffer_options.kmax;
         let kmax_in_name = utils::new_c_string("kmax")?;
 
-        let reduction_effort_in: i32 = webpsave_buffer_options.reduction_effort;
-        let reduction_effort_in_name = utils::new_c_string("reduction-effort")?;
+        let effort_in: i32 = webpsave_buffer_options.effort;
+        let effort_in_name = utils::new_c_string("effort")?;
 
         let profile_in: CString = utils::new_c_string(&webpsave_buffer_options.profile)?;
         let profile_in_name = utils::new_c_string("profile")?;
@@ -14475,8 +14741,8 @@ pub fn webpsave_buffer_with_opts(
             kmin_in,
             kmax_in_name.as_ptr(),
             kmax_in,
-            reduction_effort_in_name.as_ptr(),
-            reduction_effort_in,
+            effort_in_name.as_ptr(),
+            effort_in,
             profile_in_name.as_ptr(),
             profile_in.as_ptr(),
             strip_in_name.as_ptr(),
@@ -14545,9 +14811,9 @@ pub struct WebpsaveTargetOptions {
     /// kmax: `i32` -> Maximum number of frames between key frames
     /// min: 0, max: 2147483647, default: 2147483647
     pub kmax: i32,
-    /// reduction_effort: `i32` -> Level of CPU effort to reduce file size
+    /// effort: `i32` -> Level of CPU effort to reduce file size
     /// min: 0, max: 6, default: 4
-    pub reduction_effort: i32,
+    pub effort: i32,
     /// profile: `String` -> ICC profile to embed
     pub profile: String,
     /// strip: `bool` -> Strip all metadata from image
@@ -14572,7 +14838,7 @@ impl std::default::Default for WebpsaveTargetOptions {
             min_size: false,
             kmin: i32::from(2147483646),
             kmax: i32::from(2147483647),
-            reduction_effort: i32::from(4),
+            effort: i32::from(4),
             profile: String::from("sRGB"),
             strip: false,
             background: Vec::new(),
@@ -14638,8 +14904,8 @@ pub fn webpsave_target_with_opts(
         let kmax_in: i32 = webpsave_target_options.kmax;
         let kmax_in_name = utils::new_c_string("kmax")?;
 
-        let reduction_effort_in: i32 = webpsave_target_options.reduction_effort;
-        let reduction_effort_in_name = utils::new_c_string("reduction-effort")?;
+        let effort_in: i32 = webpsave_target_options.effort;
+        let effort_in_name = utils::new_c_string("effort")?;
 
         let profile_in: CString = utils::new_c_string(&webpsave_target_options.profile)?;
         let profile_in_name = utils::new_c_string("profile")?;
@@ -14676,8 +14942,8 @@ pub fn webpsave_target_with_opts(
             kmin_in,
             kmax_in_name.as_ptr(),
             kmax_in,
-            reduction_effort_in_name.as_ptr(),
-            reduction_effort_in,
+            effort_in_name.as_ptr(),
+            effort_in,
             profile_in_name.as_ptr(),
             profile_in.as_ptr(),
             strip_in_name.as_ptr(),
@@ -15301,7 +15567,7 @@ pub fn tiffsave_buffer_with_opts(
     }
 }
 
-/// VipsForeignSaveMagickFile (magicksave), save file with ImageMagick (.gif, .bmp), priority=-100, any
+/// VipsForeignSaveMagickFile (magicksave), save file with ImageMagick (), priority=-100, any
 /// inp: `&VipsImage` -> Image to save
 /// filename: `&str` -> Filename to save to
 
@@ -15353,7 +15619,7 @@ impl std::default::Default for MagicksaveOptions {
     }
 }
 
-/// VipsForeignSaveMagickFile (magicksave), save file with ImageMagick (.gif, .bmp), priority=-100, any
+/// VipsForeignSaveMagickFile (magicksave), save file with ImageMagick (), priority=-100, any
 /// inp: `&VipsImage` -> Image to save
 /// filename: `&str` -> Filename to save to
 /// magicksave_options: `&MagicksaveOptions` -> optional arguments
@@ -15421,7 +15687,7 @@ pub fn magicksave_with_opts(
     }
 }
 
-/// VipsForeignSaveMagickBuffer (magicksave_buffer), save image to magick buffer (.gif, .bmp), priority=-100, any
+/// VipsForeignSaveMagickBuffer (magicksave_buffer), save image to magick buffer (), priority=-100, any
 /// inp: `&VipsImage` -> Image to save
 /// returns `Vec<u8>` - Buffer to save to
 pub fn magicksave_buffer(inp: &VipsImage) -> Result<Vec<u8>> {
@@ -15478,7 +15744,7 @@ impl std::default::Default for MagicksaveBufferOptions {
     }
 }
 
-/// VipsForeignSaveMagickBuffer (magicksave_buffer), save image to magick buffer (.gif, .bmp), priority=-100, any
+/// VipsForeignSaveMagickBuffer (magicksave_buffer), save image to magick buffer (), priority=-100, any
 /// inp: `&VipsImage` -> Image to save
 /// magicksave_buffer_options: `&MagicksaveBufferOptions` -> optional arguments
 /// returns `Vec<u8>` - Buffer to save to
